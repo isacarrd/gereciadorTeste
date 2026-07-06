@@ -2,6 +2,10 @@
 
 Este projeto tem como objetivo central criar uma aplicação capaz de gerenciar uma base de produtos. O desenvolvimento foi planejado para evoluir de uma simulação simples até um sistema robusto com persistência de dados real.
 
+<div align="center">
+<img src="https://github.com/user-attachments/assets/294488d6-129d-44cc-845e-49f252d010e0" alt="desktop" width="400">
+</div>
+
 ## 🎯 Premissas do Projeto
 Para garantir um código limpo e uma experiência de usuário (UX) inteligente, as seguintes regras de negócio foram estabelecidas:
 - **Validação:** Mínimo de 1 categoria obrigatória e estoque sempre `>= 0`.
@@ -22,4 +26,12 @@ Este diretório reflete a **Fase de Testes** do projeto. O objetivo aqui não é
 Atualmente testado:
 - [x] Lógica da barra de pesquisa.
 
+<br>
+
+---
+
 ➡️ **[Avançar para a Fase 1: React + Dados Simulados](https://github.com/isacarrd/gerenciadorProdutosScript)**
+
+➡️ **[Avançar para a Fase 2: Integração com API Pública](#)**
+
+➡️ **[Avançar para a Fase 3: Backend e Banco de Dados](#)**
