@@ -62,13 +62,10 @@
       let campo = inputPesquisa.value.toLowerCase()
       conts.innerHTML = ""
 
-      produto.filter((prod) =>
-        prod.categorias.some(categ =>
-          categ.toLowerCase().includes(campo)
-        )
-      ).forEach((teste) =>
-        addHTML(JSON.stringify(Object.values(teste)
-        ))
+      produto.filter(
+        (prod) => prod.categorias.some((categ) => categ.toLowerCase().includes(campo))
+      ).forEach(
+        (product) => addHTML(JSON.stringify(Object.values(product)))
       )
     })
 
