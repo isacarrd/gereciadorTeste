@@ -65,7 +65,7 @@
       produto.filter(
 /*         // Maneira que EU pensei em fazer:
         (prod) => prod.id.toString() === campo  */
-        (prod) => prod.id.toString().includes(campo ?? 'Nada encontrado')
+        (prod) => prod.id.toString().includes(campo)
       ).forEach(
         (product) => addHTML(JSON.stringify(Object.values(product)))
       )
