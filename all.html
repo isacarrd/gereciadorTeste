@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <form action="">
+    <label for="search"></label>
+    <input type="search" placeholder="Pesquisa" id="pesquisa">
+    <button type="submit" id="pesquisar">Pesquisar</button>
+  </form>
+  <div id="conts">
+
+  </div>
+  <script>
+    const inputPesquisa = document.getElementById('pesquisa')
+    const btnPesquisar = document.getElementById('pesquisar')
+    const conts = document.getElementById('conts')
+
+    const produto = [
+      {
+        id: 1,
+        nome: "RX9060 XT 16gb",
+        descricao: "Placa de vídeo AMD nível Intermediário",
+        imagem: "IMG",
+        categorias: [
+          "Eletrônicos",
+          "Hardware"
+        ],
+        quantidade: 10
+      },
+      {
+        id: 2,
+        nome: "RTX5060 8gb",
+        descricao: "Placa de vídeo NVIDIA nível Básico",
+        imagem: "IMG",
+        categorias: [
+          "Eletrônicos",
+          "Hardware"
+        ],
+        quantidade: 20
+      },
+      {
+        id: 4,
+        nome: "Copo de plástico",
+        descricao: "Copo preto de plástico fosco.",
+        imagem: "IMG",
+        categorias: [
+          "Utensílios",
+          "Plástico",
+          "Uso pessoal"
+        ],
+        quantidade: 0
+      }
+    ]
+
+    /* Aqui eu testei basicamente tudo que fiz até agora! */
+    inputPesquisa.addEventListener("input", () => {
+      let campo = inputPesquisa.value.toLowerCase()
+      conts.innerHTML = ""
+
+      const produtosFiltrados = produto.filter(prod => {
+        const prodId = prod.id.toString() === campo
+        const prodNome = prod.nome.toLowerCase().includes(campo)
+        const prodCateg = prod.categorias.some((categ) => categ.toLowerCase().includes(campo))
+
+        return prodId || prodNome || prodCateg
+      })
+
+      if (produtosFiltrados.length === 0) {
+        addHTML("Produto não encontrado, busque por: ID, Nome ou Categoria!")
+      } else {
+        produtosFiltrados.forEach((product) => addHTML(JSON.stringify(Object.values(product))))
+      }
+    })
+
+    const addHTML = function (item) {
+      const div = document.createElement('div')
+      div.innerHTML = item
+      conts.append(div)
+    }
+    produto.forEach((pd) => {
+      addHTML(JSON.stringify(Object.values(pd)))
+    })
+
+
+  </script>
+</body>
+
+</html>
