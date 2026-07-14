@@ -29,7 +29,7 @@ Atualmente testado:
 - [x] Cores dinâmicas determinadas pela quantidade do estoque (0 ou >0).
 - [x] Lógica de criação de produtos.
 - [x] Criação (e renderização) de produtos com produtos existentes.
-- [ ] Tudo em um -> barra de pesquisa + renderização + criação de produtos.
+- [x] Tudo em um -> barra de pesquisa + renderização + criação de produtos.
 
 
 <br>
