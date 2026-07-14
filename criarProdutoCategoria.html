@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Produtos</title>
+  <style>
+    #produtos {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .produtoCard {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #E5E4DF;
+      width: fit-content;
+      padding: 15px;
+      border-radius: 20px;
+      /* cursor: pointer; */
+    }
+
+    .quantidadeZero {
+      color: #828282;
+      cursor: not-allowed;
+    }
+
+    #createProduct {
+      width: 96px;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 26px;
+      background-color: #913F1D;
+      border: none;
+      color: #E5E4DF;
+      font-size: 48px;
+      border-radius: 100%;
+      cursor: pointer;
+    }
+
+    #createProduct:hover {
+      border: 5px solid black;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="card">
+    <button id="createProduct" onclick="produto.createProduct()">+</button>
+    <div id="produtos">
+    </div>
+  </div>
+  <script>
+    class Produto {
+      constructor() {
+        this.id = 1
+        this.produtos = []
+
+        // this.nomeProduto = ''
+        // this.descProduto = ''
+        // this.quantProduto = 0
+      }
+
+      createProduct() {
+        let produto = this.readData()
+        if (this.validate(produto)) {
+          this.add(produto)
+        }
+        console.log(this.produtos)
+      }
+
+      add(produto) {
+        this.produtos.push(produto)
+        this.id++
+        this.render()
+      }
+
+      render() {
+        const divProdutos = document.getElementById('produtos')
+        const produtoCard = this.produtos.map((prod) => {
+          return `
+          <div class="produtoCard ${prod.quantProduto <= 0 ? 'quantidadeZero' : ''}">
+
+            <h2 class="nomeProduto">${prod.nomeProduto}</h2>
+            <p class="descricao">${prod.descProduto}</p>
+            <div>${prod.categProduto
+              .map(categ => `<button>${categ}</button>`)
+              .join("")}
+            </div>
+
+            <p> <strong> Quantidade: </strong> ${prod.quantProduto}</p>
+          </div>
+          `
+        })
+        divProdutos.innerHTML = produtoCard.join('')
+      }
+
+      readData() {
+        let produto = {}
+
+        produto.id = this.id
+
+        // A ideia original é um modal onde a função validade() faz mais sentido do que usar o window.prompt, mas meu intuito é basicamente o mesmo.
+        produto.nomeProduto = window.prompt('Insira o nome do produto') // Nome do produto
+        produto.descProduto = window.prompt('Insira a descrição do produto') // Descrição do produto
+        produto.categProduto = [] // Categorias do produto
+
+        // Lógica para adicionar no máximo 5 categorias no produto
+        for (let contador = 0; contador < 5; contador++) {
+          let categUsuario = window.prompt('Insira a(s) categoria(s) do produto')
+          if (categUsuario === null) {
+            console.log("O usuário clicou em 'Cancelar' ou fechou a janela.");
+            break
+          } else if (categUsuario.trim() === "") {
+            console.log("O usuário clicou em 'OK', mas não digitou nada.");
+            break
+          } else {
+            console.log("O usuário digitou: " + categUsuario + " e clicou em 'OK'.");
+            produto.categProduto.push(categUsuario)
+          }
+        }
+
+        produto.quantProduto = Number(window.prompt('Insira a quantidade do produto'))
+
+        return produto
+      }
+
+      // Essa função não faz tanto sentido com o uso do window.prompt, mas o intuito da ideia original é essa (modal).
+      validate(produto) {
+        let message = ''
+        if (produto.nomeProduto == '') {
+          message += 'Nome do produto não pode ficar vazio. \n'
+        }
+
+        if (produto.descProduto == '') {
+          message += 'A descrição do produto não pode ficar vazia. \n'
+        }
+
+        if (produto.categProduto.length == 0) {
+          message += 'O produto precisa ter pelo menos uma categoria. \n'
+        }
+
+        if (produto.quantProduto < 0) {
+          message += 'A quantidade do produto não ser menor que zero. \n'
+        }
+
+        if (message != '') {
+          alert(message)
+          return false
+        }
+
+        return true
+      }
+    }
+    var produto = new Produto()
+  </script>
+</body>
+
+</html>
