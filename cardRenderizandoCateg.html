@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cores</title>
+  <style>
+    #produtos {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .produtoCard {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #E5E4DF;
+      width: fit-content;
+      padding: 15px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .quantidadeZero {
+      color: #828282;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="produtos">
+
+  </div>
+  <script>
+    const produto = [
+      {
+        id: 1,
+        nome: "RX9060 XT 16gb",
+        descricao: "Placa de vídeo AMD nível Intermediário",
+        imagem: "IMG",
+        categorias: [
+          "Eletrônicos",
+          "Hardware"
+        ],
+        quantidade: 10
+      },
+      {
+        id: 2,
+        nome: "RTX5060 8gb",
+        descricao: "Placa de vídeo NVIDIA nível Básico",
+        imagem: "IMG",
+        categorias: [
+          "Eletrônicos",
+          "Hardware"
+        ],
+        quantidade: 20
+      },
+      {
+        id: 3,
+        nome: "Blusa do Brasil",
+        descricao: "FIFA 2026",
+        imagem: "IMG",
+        categorias: [
+          "Camisetas"
+        ],
+        quantidade: 0
+      },
+      {
+        id: 4,
+        nome: "Copo de plástico",
+        descricao: "Copo preto de plástico fosco.",
+        imagem: "IMG",
+        categorias: [
+          "Utensílios",
+          "Plástico",
+          "Uso pessoal"
+        ],
+        quantidade: 0
+      }
+    ]
+
+    const produtosDiv = document.getElementById('produtos');
+    const produtoCard = produto.map((prod) => {
+      return `
+        <div class="produtoCard ${prod.quantidade <= 0 ? 'quantidadeZero' : ''}">
+
+            <h2 class="nomeProduto">${prod.nome}</h2>
+            <p class="descricao">${prod.descricao}</p>
+            <div>${prod.categorias.map(categ => `
+              <button>${categ}</button>
+              `).join("")}</div>
+
+          <p> <strong> Quantidade: </strong> ${prod.quantidade}</p>
+        </div>
+      `
+    })
+
+    produtosDiv.innerHTML = produtoCard.join('')
+  </script>
+</body>
+
+</html>
