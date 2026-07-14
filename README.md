@@ -25,6 +25,11 @@ Este diretório reflete a **Fase de Testes** do projeto. O objetivo aqui não é
 
 Atualmente testado:
 - [x] Lógica da barra de pesquisa.
+- [x] Lógica renderização de itens.
+- [x] Cores dinâmicas determinadas pela quantidade do estoque (0 ou >0).
+- [x] Lógica de criação de produtos.
+- [ ] Tudo em um -> barra de pesquisa + renderização + criação de produtos.
+
 
 <br>
 
