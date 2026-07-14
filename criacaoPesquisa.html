@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Produtos</title>
+  <style>
+    #produtos {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .produtoCard {
+      background-color: #E5E4DF;
+      width: fit-content;
+      padding: 15px;
+      border-radius: 20px;
+      /* cursor: pointer; */
+    }
+
+    .quantidadeZero {
+      color: #828282;
+      cursor: not-allowed;
+    }
+
+    #createProduct {
+      width: 96px;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 26px;
+      background-color: #913F1D;
+      border: none;
+      color: #E5E4DF;
+      font-size: 48px;
+      border-radius: 100%;
+      cursor: pointer;
+    }
+
+    #createProduct:hover {
+      border: 5px solid black;
+    }
+
+    .texto{
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+
+  <label for="search"></label>
+  <input type="search" placeholder="Pesquisa" id="pesquisa">
+  <button type="submit" id="pesquisar">Pesquisar</button>
+
+  <div id="card">
+    <button id="createProduct" onclick="produto.createProduct()">+</button>
+    <div id="produtos">
+
+    </div>
+  </div>
+</body>
+<script src="/criacaoPesquisa.js"></script>
+
+</html>
