@@ -30,6 +30,7 @@ Atualmente testado:
 - [x] Lógica de criação de produtos.
 - [x] Criação (e renderização) de produtos com produtos existentes.
 - [x] Tudo em um -> barra de pesquisa + renderização + criação de produtos.
+- [ ] CRUD -> Deletar produto específico e Alterar informações de um produto específico.
 
 
 <br>
