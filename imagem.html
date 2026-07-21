@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>Testando imagem</h1>
+  <input type="file" name="" id="imagem">
+  <button onclick="enviar()">Adicionar na tela</button>
+  <div id="imagens">
+    <img id="preview" src="" alt="Prévia da imagem" style="max-width: 300px; display: none;">
+  </div>
+  <script>
+
+    function enviar() {
+      const imagemInput = document.getElementById('imagem')
+      const arquivo = imagemInput.files[0]
+      const previewImage = document.getElementById('preview');
+
+
+      if (arquivo) {
+        const leitura = new FileReader()
+        leitura.onload = function (evt) {
+          previewImage.src = evt.target.result // Define a imagem lida como fonte da tag
+          previewImage.style.display = 'block'; // Torna a imagem visível
+        }
+        leitura.readAsDataURL(arquivo) // Lê o arquivo como uma URL de dados (Base64)
+      } else {
+        alert('selecione uma imagem!')
+        return
+      }
+    }
+  </script>
+</body>
+
+</html>
