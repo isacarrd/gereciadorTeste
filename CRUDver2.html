@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD VERSAO 2.0</title>
+  <style>
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 500px;
+      font-family: Arial, Helvetica, sans-serif;
+      padding: 20px;
+      gap: 24px;
+    }
+
+    #produtos {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .produtoCard {
+      width: 200px !important;
+      background-color: #E5E4DF;
+      width: fit-content;
+      padding: 15px;
+      border-radius: 20px;
+      /* cursor: pointer; */
+    }
+
+    .quantidadeZero {
+      color: #828282;
+      cursor: not-allowed;
+    }
+
+    #createProduct {
+      align-items: center;
+      justify-content: center;
+      background-color: #913F1D;
+      border: none;
+      color: #E5E4DF;
+      cursor: pointer;
+      border: 2px solid #913F1D;
+    }
+
+    #createProduct:hover {
+      border: 2px solid black;
+    }
+
+    .texto {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .botao {
+      border: 1px solid #913F1D;
+      padding: 8px;
+      border-radius: 10px;
+      background-color: #E5E4DF;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .botao:hover {
+      background-color: #913F1D;
+    }
+
+    :disabled {
+      cursor: not-allowed;
+      color: #828282;
+    }
+
+    .botao:disabled:hover {
+      background-color: initial;
+    }
+
+    .imagemDoProduto {
+      max-width: 100%;
+    }
+
+    #card{
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    dialog{
+      border-radius: 10px;
+      background-color: #E5E4DF;
+    }
+    dialog::backdrop{
+      background-color: rgba(0, 0, 0, 0.437);
+    }
+    #cancelarCriacao{
+      background-color: #da2d2d;
+      cursor: pointer;
+      color: white;
+      border: 2px solid #da2d2d;
+    }
+    #cancelarCriacao:hover{
+      border: 2px solid #4e1010;
+    }
+
+    #abrirModalCriar{
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <dialog id="modalCriar">
+        <form action="">
+          <div class="campo">
+            <label for="nomeProduto">Nome do produto: </label>
+            <input type="text" placeholder="Nome do Produto" id="nomeProduto">
+          </div>
+          <div class="campo">
+            <label for="descProduto">Descrição do produto: </label>
+            <input type="text" placeholder="Descrição do Produto" id="descProduto">
+          </div>
+          <div class="campo">
+            <label for="categProduto">Categoria do produto <strong>(separado por vírgulas)</strong>: </label>
+            <input type="text" placeholder="Categoria do Produto" id="categProduto">
+          </div>
+          <div class="campo">
+            <label for="quantProduto">Quantidade do produto: </label>
+            <input type="text" placeholder="Quantidade do Produto" id="quantProduto">
+          </div>
+          <div class="campo">
+            <input type="file" name="imgProduto" id="imgProduto">
+          </div>
+          <button type="button" id="createProduct" onclick="produto.createProduct()">Criar</button>
+          <button type="button" id="cancelarCriacao">Cancelar</button>
+        </form>
+  </dialog>
+
+  <dialog id="modalAlterar">
+        <form action="">
+          <div class="campo">
+            <label for="nomeNovo">Novo nome do produto: </label>
+            <input type="text" placeholder="Nome do Produto" id="nomeNovo">
+          </div>
+          <div class="campo">
+            <label for="descNova">Nova descrição do produto: </label>
+            <input type="text" placeholder="Descrição do Produto" id="descNova">
+          </div>
+          <div class="campo">
+            <label for="categProdutoNovas">Nova(s) categoria(s) do produto <strong>(separado por vírgulas)</strong>: </label>
+            <input type="text" placeholder="Categoria do Produto" id="categProdutoNovas">
+          </div>
+          <div class="campo">
+            <label for="quantNova">Nova quantidade do produto: </label>
+            <input type="text" placeholder="Quantidade do Produto" id="quantNova">
+          </div>
+          <div class="campo">
+            <input type="file" name="novaImgProduto" id="novaImgProduto">
+          </div>
+          <button type="button" id="salvarAlteracoes" onclick="produto.createProduct()">Criar</button>
+          <button type="button" id="cancelarAlteracao">Cancelar</button>
+        </form>
+  </dialog>
+
+  <label for="search"></label>
+  <input type="search" placeholder="Pesquisa" id="pesquisa">
+  <button type="submit" id="pesquisar">Pesquisar</button>
+  
+  <div id="card">
+    <button id="abrirModalCriar" type="button">+</button>
+    <div id="produtos">
+      <script src="/CRUDver2.js"></script>
+    </div>
+  </div>
+</body>
+
+</html>
