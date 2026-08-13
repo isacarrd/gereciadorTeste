@@ -32,8 +32,8 @@ Atualmente testado:
 - [x] Tudo em um -> barra de pesquisa + renderização + criação de produtos.
 - [x] CRUD -> Deletar produto específico e Alterar informações de um produto específico.
 - [x] CRUD -> Adicionar imagens na lógica.
-- [EM ANÁLISE] Adicionar imagens como algo alterável.
-- [EM ANÁLISE] Criar categorias com uso do select.
+- [x] Adicionar imagens como algo alterável.
+- [x] Criar categorias com uso do select.
 
 
 <br>
