@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select 1.0</title>
+  <style>
+    dialog::backdrop {
+      background-color: #0000005d;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Testando o Select</h1>
+  <dialog id="modalCateg">
+    <label for="inputCateg">Nome da categoria</label>
+    <input type="text" name="inputCateg" id="inputCateg" placeholder="Categoria">
+    <button id="cancelarModal">Cancelar</button>
+    <button id="salvarCateg">Salvar</button>
+  </dialog>
+  <select name="selectN1" id="selectN1">
+    <option value="">Selecione uma categoria</option>
+  </select>
+  <button id="criarCateg">Criar nova categoria</button>
+  <script>
+    /*     const categorias = ['Hardware', 'Camisetas', 'Eletrônicos', 'Decoração', 'Higiene Pessoal']
+        const selectN1 = document.getElementById('selectN1')
+    
+        categorias.map((categ)=>{
+          const opcao = document.createElement('option')
+          opcao.innerHTML = categ
+          selectN1.appendChild(opcao)
+        }) */
+
+
+    const cancelarModal = document.getElementById('cancelarModal')
+    const salvarCateg = document.getElementById('salvarCateg')
+    const criarCateg = document.getElementById('criarCateg')
+    const modalCateg = document.getElementById('modalCateg')
+    const selectN1 = document.getElementById('selectN1')
+
+    let categorias = ['Hardware', 'Camisetas', 'Eletrônicos', 'Decoração', 'Higiene Pessoal']
+
+    categorias.map((categ) => {
+      const opcao = document.createElement('option')
+      opcao.innerHTML = categ
+      selectN1.appendChild(opcao)
+    })
+    
+    criarCateg.addEventListener('click', () => {
+      modalCateg.showModal()
+    })
+
+    salvarCateg.addEventListener('click', (evt) => {
+      evt.preventDefault()
+
+      const inputCateg = document.getElementById('inputCateg').value
+
+      if (!categorias.includes(inputCateg)) {
+        categorias.push(inputCateg)
+        addOptions()
+      } else {
+        alert('Categoria já existente!')
+        return
+      }
+
+      console.log(categorias)
+    })
+
+    cancelarModal.addEventListener('click', () => {
+      modalCateg.close()
+    })
+
+    function addOptions() {
+      inputCateg.value = ""
+      categorias.map((categ) => {
+        const opcao = document.createElement('option')
+        opcao.innerHTML = categ
+        selectN1.appendChild(opcao)
+      })
+    }
+
+  </script>
+</body>
+
+</html>
