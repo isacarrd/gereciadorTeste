@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD VERSAO 4.0</title>
+  <style>
+    * {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 500px;
+
+      padding: 20px;
+      gap: 24px;
+    }
+
+    #produtos {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .produtoCard {
+      width: 200px !important;
+      background-color: #E5E4DF;
+      width: fit-content;
+      padding: 15px;
+      border-radius: 20px;
+      /* cursor: pointer; */
+    }
+
+    .quantidadeZero {
+      color: #828282;
+      cursor: not-allowed;
+    }
+
+    #createProduct {
+      align-items: center;
+      justify-content: center;
+      background-color: #913F1D;
+      border: none;
+      color: #E5E4DF;
+      cursor: pointer;
+      border: 2px solid #913F1D;
+    }
+
+    #createProduct:hover {
+      border: 2px solid black;
+    }
+
+
+    .botao {
+      border: 1px solid #913F1D;
+      padding: 8px;
+      border-radius: 10px;
+      background-color: #E5E4DF;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .botao:hover {
+      background-color: #913F1D;
+    }
+
+    :disabled {
+      cursor: not-allowed;
+      color: #828282;
+    }
+
+    .botao:disabled:hover {
+      background-color: initial;
+    }
+
+    .imagemDoProduto {
+      max-width: 100%;
+    }
+
+    #card {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 24px;
+    }
+
+    dialog {
+
+      border-radius: 10px;
+      background-color: #E5E4DF;
+    }
+
+    dialog::backdrop {
+      background-color: rgba(0, 0, 0, 0.437);
+    }
+
+    #cancelarCriacao {
+      background-color: #da2d2d;
+      cursor: pointer;
+      color: white;
+      border: 2px solid #da2d2d;
+    }
+
+    #cancelarCriacao:hover {
+      border: 2px solid #4e1010;
+    }
+
+    #abrirModalCriar {
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+    }
+
+    #pesquisas {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 24px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <dialog id="modalCriar">
+    <form action="">
+
+      <!-- Nome -->
+      <div class="campo">
+        <label for="nomeProduto">Nome do produto: </label>
+        <input type="text" placeholder="Nome do Produto" id="nomeProduto">
+      </div>
+      <!-- Descrição -->
+      <div class="campo">
+        <label for="descProduto">Descrição do produto: </label>
+        <input type="text" placeholder="Descrição do Produto" id="descProduto">
+      </div>
+      <!-- Categoria(s) -->
+      <div class="campo" id="containerCategoriasCriar">
+        <label>Categoria(s) do produto:</label>
+        <div class="linha-categoria" style="display: flex; gap: 10px; margin-bottom: 5px;">
+          <select class="categProdutoSelect">
+
+          </select>
+          <button type="button" class="botao"
+            onclick="produto.addCategoriaSelect('containerCategoriasCriar', 'categProdutoSelect')">+</button>
+        </div>
+      </div>
+      <!-- Quantidade -->
+      <div class="campo">
+        <label for="quantProduto">Quantidade do produto: </label>
+        <input type="text" placeholder="Quantidade do Produto" id="quantProduto">
+      </div>
+      <!-- Imagem -->
+      <div class="campo">
+        <input type="file" name="imgProduto" id="imgProduto">
+      </div>
+
+      <button type="button" id="createProduct" onclick="produto.createProduct()">Criar</button>
+      <button type="button" id="cancelarCriacao">Cancelar</button>
+    </form>
+  </dialog>
+
+  <dialog id="modalAlterar">
+    <form action="">
+      <div class="campo">
+        <label for="nomeNovo">Novo nome do produto: </label>
+        <input type="text" placeholder="Nome do Produto" id="nomeNovo">
+      </div>
+      <div class="campo">
+        <label for="descNova">Nova descrição do produto: </label>
+        <input type="text" placeholder="Descrição do Produto" id="descNova">
+      </div>
+
+
+      <div class="campo" id="containerCategoriasAlterar">
+        <label>Nova(s) categoria(s) do produto:</label>
+        <div class="linha-categoria" style="display: flex; gap: 10px; margin-bottom: 5px;">
+          <select class="categProdutoNovasSelect">
+            <!-- Opções serão injetadas pelo JS -->
+          </select>
+          <button type="button" class="botao"
+            onclick="produto.addCategoriaSelect('containerCategoriasAlterar', 'categProdutoNovasSelect')">+</button>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="quantNova">Nova quantidade do produto: </label>
+        <input type="text" placeholder="Quantidade do Produto" id="quantNova">
+      </div>
+      <div class="campo">
+        <input type="file" name="novaImgProduto" id="novaImgProduto">
+      </div>
+      <button type="button" id="salvarAlteracoes">Salvar Alterações</button>
+      <button type="button" id="cancelarAlteracao">Cancelar</button>
+    </form>
+  </dialog>
+
+  <dialog id="modalCateg">
+    <label for="inputCateg">Nome da categoria</label>
+    <input type="text" name="inputCateg" id="inputCateg" placeholder="Categoria">
+    <button id="cancelarModalCateg">Cancelar</button>
+    <button id="salvarCateg">Salvar</button>
+  </dialog>
+
+  <div id="pesquisas">
+    <div id="selectDiv">
+      <select name="selectN1" id="selectN1">
+        
+      </select>
+      <button id="criarCateg">Criar nova categoria</button>
+    </div>
+    <div id="search">
+      <label for="pesquisa">Nome, Id ou Categoria do <strong>Produto</strong>:</label>
+      <input type="search" placeholder="Pesquisa" id="pesquisa">
+    </div>
+  </div>
+
+  <div id="card">
+    <button id="abrirModalCriar" type="button">+</button>
+    <div id="produtos">
+      <!-- Referência ao JS -->
+      <script src="CRUDver4.js"></script>
+    </div>
+  </div>
+</body>
+
+</html>
