@@ -34,7 +34,7 @@ Atualmente testado:
 - [x] CRUD -> Adicionar imagens na lógica.
 - [x] Adicionar imagens como algo alterável.
 - [x] Criar categorias com uso do select.
-- [ ] Criar produto com a categoria + select.
+- [x] Criar produto com a categoria + select.
 
 
 <br>
