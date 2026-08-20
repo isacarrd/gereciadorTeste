@@ -41,7 +41,7 @@ Atualmente testado:
 
 ---
 
-➡️ **[Avançar para a Fase 1: React + Dados Simulados](https://github.com/isacarrd/gerenciadorProdutosScript)**
+➡️ **[Avançar para a Fase 1: React + Dados Simulados](https://github.com/isacarrd/GerenciadorFase1)**
 
 ➡️ **[Avançar para a Fase 2: Integração com API Pública](#)**
 
