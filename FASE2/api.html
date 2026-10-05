@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testando API DummyJSON</title>
+  <style>
+    * {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .produtos-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .produto-card {
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .produto-card img {
+      max-width: 100%;
+      height: 150px;
+      object-fit: contain;
+    }
+
+    .pd {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>API DummyJSON</h1>
+
+  <input type="number" name="" id="searchProduct" placeholder="digite o ID">
+
+  <div id="produtos" class="produtos-container">
+    Nenhum produto aqui...
+  </div>
+
+  <script>
+    const valorID = document.getElementById('searchProduct')
+    console.log(valorID.value)
+
+    valorID.addEventListener("input", (evt) => {
+      const campo = evt.target.value
+
+      if (campo != 0) {
+        let url = `https://dummyjson.com/products/${campo}`
+      } else{}
+    })
+    const url = 'https://dummyjson.com/products';
+
+    const loadProducts = async () => {
+      try {
+        const res = await fetch(url)
+        const dados = await res.json()
+
+        const divProdutos = document.getElementById('produtos')
+        divProdutos.innerHTML = ""
+
+        dados.products.forEach(product => {
+          const card = document.createElement('div')
+          card.className = 'produto-card'
+
+          card.innerHTML = `
+          <span>ID: ${product.id}</span>
+          <img src="${product.thumbnail}" alt="${product.title}">
+            <h3>${product.title}</h3>
+            <p>${product.description}</p>
+          <div class="pd">
+            <span>${product.category}</span>
+            <strong>${product.price}</strong>
+            <span>Estoque: ${product.stock}</span>
+          </div>
+        `
+
+          divProdutos.appendChild(card)
+        });
+      } catch (error) {
+        console.error("Erro encontrado", error)
+      }
+    }
+
+    loadProducts()
+  </script>
+</body>
+
+</html>
