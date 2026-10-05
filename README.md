@@ -15,6 +15,7 @@ Para garantir um código limpo e uma experiência de usuário (UX) inteligente, 
 
 ## 🛠️ Stack Tecnológico Completo
 - Frontend: ReactJS + Tailwind CSS
+- **API**: [DummyJSON](https://dummyjson.com/)
 - Backend: Node.js
 - Banco de Dados: MongoDB
 
@@ -44,6 +45,9 @@ Atualmente testado:
 - [x] Adicionar imagens como algo alterável.
 - [x] Criar categorias com uso do select.
 - [x] Criar produto com a categoria + select.
+- [ ] Renderizar produtos através da API DummyJSON.
+- [ ] Pesquisar produtos através da API DummyJSON.
+- [ ] CRUD de produtos através da API DummyJSON.
 
 
 <br>
