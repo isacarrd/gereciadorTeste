@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste</title>
+  <style>
+    * {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .produtos-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .produto-card {
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .produto-card img {
+      max-width: 100%;
+      height: 150px;
+      object-fit: contain;
+    }
+
+    .pd {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Teste de Renderização 2.0</h1>
+  <input type="number" name="" id="searchProduct" placeholder="digite o ID">
+
+  <div id="produtos" class="produtos-container">
+    Nenhum produto aqui...
+  </div>
+
+  <script>
+    /*
+    TESTE BOBO DE ESCOPO
+
+    const campoInput = document.getElementById('searchProduct')
+        let testeEscopo = '24'
+        console.log(testeEscopo)
+    
+        campoInput.addEventListener('input', (evt) => {
+          testeEscopo = evt.target.value
+          console.log("dentro" + testeEscopo)
+        }
+        ) */
+
+    let controllCampo // Usado pra controlar o setTimeout
+
+    // Elementos HTML presentes
+    const campoInput = document.getElementById('searchProduct')
+    const divProdutos = document.getElementById('produtos')
+
+
+    // Renderização simples dos cards
+    const renderProd = (product) => {
+      const card = document.createElement('div')
+      card.className = 'produto-card'
+
+      card.innerHTML = `
+          <span>ID: ${product.id}</span>
+          <img src="${product.thumbnail}" alt="${product.title}">
+            <h3>${product.title}</h3>
+            <p>${product.description}</p>
+          <div class="pd">
+            <span>${product.category}</span>
+            <strong>${product.price}</strong>
+            <span>Estoque: ${product.stock}</span>
+          </div>
+        `
+
+      divProdutos.appendChild(card)
+    }
+
+    // Função assíncrona que temos para fazer a requisição, tendo como pedrão o campo definido como vazio, evitando também um campo com valor 'undefined' ao chamar a função vazia no carregamento da página
+    const buscandoDados = async (campo = "") => {
+      divProdutos.innerHTML = "Carregando..." // Mensagem que aparece enquanto a requisição está sendo feita
+
+      // Elemento chave: a url é definida condicionalmente através do valor do campo, se ele tiver vazio ou for 0, todos os produtos aparecem, caso não, é feita a pesquisa do produto especificado pelo campo(id)
+      const url = (campo === "" || campo === 0) ? 'https://dummyjson.com/products' : `https://dummyjson.com/products/${campo}`
+
+      try {
+        const res = await fetch(url) // Faz a requisição
+
+        if (!res.ok) {
+          throw new Error('Dados vazios') // Se for diferente de OK(200)
+        }
+
+        const dados = await res.json() // Guarda os dados da requisição em formato JSON
+        divProdutos.innerHTML = "" // A mensagem some ao receber
+
+       // Trata a diferença das respostas da API:
+        // Se buscar tudo, retorna dados.products (Array)
+        // Se buscar por ID, retorna o próprio objeto do produto
+        if (dados.products) {
+          dados.products.forEach(prod => {
+            renderProd(prod)
+          });
+        } else {
+          renderProd(dados)
+        }
+
+      } catch (error) {
+        console.error("Erro:" + error)
+        return
+      }
+    }
+
+    campoInput.addEventListener('input', (evt) => {
+      const campo = evt.target.value
+
+      // Cancela a execução que foi agendada pelo setTimeout antes de ela chegar a rodar
+      // No caso, se você escrever de novo, ela evita que o que foi escrito antes passe (pelo que entendi)
+      clearTimeout(controllCampo)
+
+      // Evita várias requisições, no caso, espera 500ms para enviar para a API
+      controllCampo = setTimeout(() => {
+        buscandoDados(campo)
+      }, 500)
+    })
+
+    // Primeira renderização ao abrir o site
+    buscandoDados()
+
+  </script>
+</body>
+
+</html>
