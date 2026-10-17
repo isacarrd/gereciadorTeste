@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste Search 2.0 </title>
+  <style>
+    * {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .produtos-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .produto-card {
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .produto-card img {
+      max-width: 100%;
+      height: 150px;
+      object-fit: contain;
+    }
+
+    .pd {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Testando Pesquisa em Extenso + categorias</h1>
+  <p>(com ID + string)</p>
+  <input type="text" placeholder="Insira um nome" id="inputTeste">
+
+  <div id="produtos" class="produtos-container">
+    Nenhum produto aqui...
+  </div>
+
+  <script>
+
+    let setCampo
+    const inputTeste = document.getElementById('inputTeste');
+    const divProdutos = document.getElementById('produtos');
+
+    const renderProd = (product) => {
+      const card = document.createElement('div')
+      card.className = 'produto-card'
+
+      card.innerHTML = `
+          <span>ID: ${product.id}</span>
+          <img src="${product.thumbnail}" alt="${product.title}">
+            <h3>${product.title}</h3>
+            <p>${product.description}</p>
+          <div class="pd">
+            <span>${product.category}</span>
+            <strong>${product.price}</strong>
+            <span>Estoque: ${product.stock}</span>
+          </div>
+        `
+
+      divProdutos.appendChild(card)
+    }
+
+    const buscandoDados = async (campo = "", id = undefined, categorie = []) => {
+      divProdutos.innerHTML = "Carregando..."
+
+      let url;
+
+      if (id !== undefined) {
+        url = `https://dummyjson.com/products/${id}`;
+      } else if (categorie.length > 0) {
+        url = `https://dummyjson.com/products/category/${categorie[0]}`;
+      } else if (campo.trim() !== "") {
+        url = `https://dummyjson.com/products/search?q=${encodeURIComponent(campo)}`;
+      } else {
+        url = "https://dummyjson.com/products?limit=0";
+      }
+
+      try {
+
+        const res = await fetch(url)
+        if (!res.ok) { throw new Error('Dados Vazios') }
+
+        const dados = await res.json()
+        divProdutos.innerHTML = ""
+
+        if (dados.products) {
+          if (dados.products.length === 0) {
+            divProdutos.innerHTML = "Produto não encontrado."
+            return
+          }
+          dados.products.forEach(prod => {
+            renderProd(prod)
+          });
+        } else {
+          renderProd(dados)
+        }
+
+      } catch (error) {
+        console.error('Erro encontrado: ' + error)
+        divProdutos.innerHTML = "Produto não encontrado."
+        return
+      }
+    }
+
+    let categFind = []
+
+    const buscandoCateg = async () => {
+      try {
+        const res = await fetch('https://dummyjson.com/products/category-list')
+        categFind = await res.json()
+        // console.log(categFind)
+      } catch (error) {
+        console.error('Erro ao buscar categoria: ', error)
+      }
+    }
+
+    buscandoCateg()
+
+    inputTeste.addEventListener('input', async (evt) => {
+      // console.log(evt.target.value)
+      const campo = evt.target.value.replace(/\s/g, '')
+      let numAchados = []
+
+      /* Preciso fazer o seguinte:
+        - recebo o array de categorias (categFind)
+        - pego esse array e faço uma "busca"/comparo com o campo
+        - se passar, ela é armazenada de alguma forma
+        - passo essa variável pro buscaDados() fazer a pesquisa com base na URL
+      */
+
+      const categAchada = campo ? categFind.filter(categ => categ.toLowerCase().includes(campo)) : [];
+
+      for (const camp of campo) {
+        if (/\d/.test(camp)) {
+          numAchados.push(camp)
+        }
+      }
+      
+      const numerosId = numAchados.join('')
+      console.log(numerosId)
+
+      clearTimeout(setCampo)
+
+      setCampo = setTimeout(() => {
+        if (/^\d+$/.test(campo)) {
+          buscandoDados("", numerosId);
+        } else {
+          buscandoDados(campo, undefined, categAchada);
+        }
+      }, 500);
+    })
+
+    buscandoDados()
+  </script>
+</body>
+
+</html>
