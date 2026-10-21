@@ -9,19 +9,17 @@ export default function GetApi() {
     axios
       .get("https://jsonplaceholder.typicode.com/users")
       .then((res) => {
-        console.log(res.data);
-        setUsers(res.data); // recebe os dados
-        setLoading(false); // para o loading
+        setUsers(res.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
         setLoading(false);
       })
       .finally(() => {
-        console.log("Requisição finalizada");
+        console.log("Código realizado");
       });
   }, []);
-
 
   return (
     <>
@@ -32,12 +30,12 @@ export default function GetApi() {
           <span> Carregando...</span>
         ) : (
           users.map((user) => (
-            <div className="divCard">
+            <div className="divCard" key={user.id} id={user.id}>
               <div className="titleCard">
                 <label>
                   <strong>User:</strong>
                 </label>
-                <span key={user.id}> {user.name} </span>
+                <span> {user.name} </span>
               </div>
               <div>
                 <span>
