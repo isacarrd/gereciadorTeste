@@ -42,7 +42,8 @@
       display: flex;
       gap: 12px;
     }
-    button{
+
+    button {
       width: fit-content;
     }
   </style>
@@ -54,33 +55,34 @@
     <!-- Vai ser utilizado apartir do teste de método UPDATE -->
     <label for="selectMethod">Select the method: </label>
     <select name="selectMethod" id="selectMethod">
-      <option value="">Ação</option>
+      <option value="">Action</option>
       <option value="POST">POST [Adicionar]</option>
       <option value="UPDATE">UPDATE [Atualizar]</option>
       <option value="DELETE">DELETE [Deletar]</option>
     </select>
   </div>
 
-  <form action="" id="formProd">
+  <form action="" id="formConfirm">
     <div class="labelProd">
       <label for="nameProd"><strong>Product Name:</strong></label>
-      <input type="text" name="nameProd" id="nameProd" placeholder="Product Name">
+      <input type="text" name="nameProd" id="nameProd" placeholder="Product Name" required>
     </div>
     <div class="labelProd">
       <label for="descProd"><strong>Product Description:</strong></label>
-      <input type="text" name="descProd" id="descProd" placeholder="Product Description">
+      <input type="text" name="descProd" id="descProd" placeholder="Product Description" required>
     </div>
     <div class="labelProd">
       <label for="categProd"><strong>Product Category:</strong></label>
-      <input type="text" name="categProd" id="categProd" placeholder="Product Category">
+      <input type="text" name="categProd" id="categProd" placeholder="Product Category" required>
     </div>
     <div class="labelProd">
       <label for="stockProd"><strong>Product Stock:</strong></label>
-      <input type="number" name="stockProd" id="stockProd" placeholder="Product Stock">
+      <input type="number" name="stockProd" id="stockProd" placeholder="Product Stock" required>
     </div>
     <button type="submit">Confirm</button>
   </form>
 
+  <div id="teste"></div>
   <script>
 
     /* 
@@ -91,18 +93,77 @@
       4. Os produtos criados devem aparecer no console.
     */
 
-    fetch('https://dummyjson.com/products/add', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        title: 'BMW Pencil',
-        description: 'idk',
-        category: 'cars?',
-        stock: 1
+    //let proximoIdLocal = 1
+    const createdProducts = []
+    const formConfirm = document.querySelector('form')
+    const divTeste = document.getElementById('teste')
+
+    formConfirm.onsubmit = (evt) => {
+      evt.preventDefault()
+      const nameProd = document.getElementById('nameProd').value
+      const descProd = document.getElementById('descProd').value
+      const categProd = document.getElementById('categProd').value
+      const stockProd = Number(document.getElementById('stockProd').value)
+
+      passandoDados(nameProd, descProd, categProd, stockProd)
+      formConfirm.reset()
+    }
+
+    function passandoDados(name, desc, categ, stock) {
+      const dados = {
+        title: name,
+        description: desc,
+        category: categ,
+        stock: stock
+      }
+      buscaDados(dados)
+    }
+
+    function renderDados(data) {
+      const divProd = document.createElement('div')
+      divProd.innerHTML = `
+        <h3>ID: ${data.id}</h3>
+        <p>Name: ${data.title}</p>
+        <p>Description: ${data.description}</p>
+        <p>Category: ${data.category}</p>
+        <p>Stock: ${data.stock}</p>
+      `
+      divTeste.appendChild(divProd)
+    }
+
+    const buscaDados = async (dados) => {
+      let url = 'https://dummyjson.com/products/add'
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
       })
-    })
-      .then(res => res.json())
-      .then(console.log);
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Erro na requisição: ${response.status}`);
+          }// Converte a resposta do servidor para JSON
+          return response.json();
+        })
+        .then((data) => {
+          createdProducts.push(data)
+          renderDados(data)
+          console.log('Sucesso:', data);
+          console.log('Produtos:', createdProducts)
+
+/*           const product = {
+            ...data,
+            idLocal: proximoIdLocal++
+          }
+          createdProducts.push(data)
+          renderDados({ ...product, id: product.idLocal })
+          console.log('Sucesso:', data);
+          console.log('Produtos:', createdProducts) */
+        })
+        .catch((error) => {
+          console.error('Erro:', error);
+        });
+    }
+
   </script>
 </body>
 
