@@ -88,18 +88,23 @@
 
   <script>
 
+    /* Variáveis */
     const createdProducts = []
+    const updatedProducts = {}
     const selectMethod = document.getElementById('selectMethod')
     // const formConfirm = document.querySelector('form')
-
     let setCampo
     const searchInput = document.getElementById('searchInput');
     const divProdutos = document.getElementById('produtos');
     const formArea = document.getElementById('formArea')
 
-    const renderProd = (product) => {
+    /* Funções de renderização/criação de cards */
+    const createCard = (product) => { // separação do card de criação da inserção
+      product = updatedProducts[product.id] ?? product // usa a versão atualizada se existir
+
       const card = document.createElement('div')
       card.className = 'produto-card'
+      card.dataset.id = product.id
 
       card.innerHTML = `
             <span>ID: ${product.id}</span>
@@ -111,15 +116,18 @@
             </div>
           `
 
-      divProdutos.appendChild(card)
+      return card
     }
+    const renderProd = (product) => divProdutos.appendChild(createCard(product)) // o renderProd continua o mesmo
 
+    /* Lógica de select */
     selectMethod.addEventListener('change', (evt) => {
       const selectedValue = evt.target.value
       // console.log("Valor escolhido: ", selectedValue)
       renderForm(selectedValue)
     })
 
+    /* Lógica de renderização dos FORMULÁRIOS através do SELECT */
     function renderForm(method) {
       let message
 
@@ -208,12 +216,12 @@
       DELETE: { url: ({ id }) => `${API}/${id}`, httpMethod: 'DELETE' },
     }
 
-    /* 
-      method (ação) -> POST | PUT | DELETE; 
-      dados -> objeto com os dados do formulário 
-    */
 
     const sendRequest = async (method, dados) => {
+      /*  SEND REQUEST
+        method (ação) -> POST | PUT | DELETE; 
+        dados -> objeto com os dados do formulário 
+      */
       const { url, httpMethod } = requests[method] // acessa o objeto pela chave dinâmica, ex: method = PUT? logo requests.PUT
       const options = { method: httpMethod } // verbo + segundo argumento do fetch (o objeto de opções)
 
@@ -239,14 +247,16 @@
 
       const form = evt.target                       // o form que disparou o evento
       const method = form.dataset.method            // "POST" | "PUT" | "DELETE"
-      const data = Object.fromEntries(new FormData(form))
+      const data = Object.fromEntries(new FormData(form)) // extrai os campos de um formulário HTML e gera uma lista iterável contendo pares no formato [nome_do_campo, valor]
+
+      const filled = Object.fromEntries(Object.entries(data).filter(([, val]) => val !== '')) // filtra essa lista para manter apenas os pares onde o valor não é uma string vazia
 
       const dados = {
-        id: data.idProd,
-        title: data.nameProd,
-        description: data.descProd,
-        category: data.categProd,
-        stock: Number(data.stockProd),
+        id: filled.idProd,
+        title: filled.nameProd,
+        description: filled.descProd,
+        category: filled.categProd,
+        stock: filled.stockProd && Number(filled.stockProd),
       }
 
       try {
@@ -256,12 +266,18 @@
           createdProducts.push(result)
           renderProd(result)
           message = "Produto criado com sucesso!"
+
         } else if (method === 'PUT') {
+          updatedProducts[result.id] = result // guarda a versão atualizada
+
           console.log('Atualizado:', result)
-          // aqui você troca o card antigo pelo novo
+          const oldCard = divProdutos.querySelector(`[data-id="${result.id}"]`) // encontra o card pelo atributo
+          if (oldCard) oldCard.replaceWith(createCard(result)) // troca pelo novo no mesmo lugar se o produto tiver visível na tela
           message = `Produto de id ${dados.id} atualizado com sucesso!`
+          console.log('Produtos atualizados:', updatedProducts)
+
         } else if (method === 'DELETE') {
-          console.log('Deletado:', result) 
+          console.log('Deletado:', result)
           // vem com isDeleted: true
           // aqui você remove o card da tela
           message = `Produto de id ${dados.id} deletado com sucesso!`
@@ -275,6 +291,8 @@
       }
     })
 
+
+    /* Requisião "mãe" para render */
     const buscandoDados = async (campo = "", id = undefined, categorie = []) => {
       divProdutos.innerHTML = "Carregando..."
 
@@ -317,8 +335,9 @@
       }
     }
 
-    let categFind = []
 
+    /* Lógica de search por categoria + search geral */
+    let categFind = []
     const buscandoCateg = async () => {
       try {
         const res = await fetch('https://dummyjson.com/products/category-list')
@@ -327,9 +346,7 @@
         console.error('Erro ao buscar categoria: ', error)
       }
     }
-
     buscandoCateg()
-
     searchInput.addEventListener('input', async (evt) => {
       const campo = evt.target.value.replace(/\s/g, '')
       let numAchados = []
