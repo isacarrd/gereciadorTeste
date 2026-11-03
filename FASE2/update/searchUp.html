@@ -268,13 +268,24 @@
           message = "Produto criado com sucesso!"
 
         } else if (method === 'PUT') {
-          updatedProducts[result.id] = result // guarda a versão atualizada
-
-          console.log('Atualizado:', result)
-          const oldCard = divProdutos.querySelector(`[data-id="${result.id}"]`) // encontra o card pelo atributo
-          if (oldCard) oldCard.replaceWith(createCard(result)) // troca pelo novo no mesmo lugar se o produto tiver visível na tela
           message = `Produto de id ${dados.id} atualizado com sucesso!`
           console.log('Produtos atualizados:', updatedProducts)
+          console.log('Atualizado:', result)
+
+          const changes = Object.fromEntries(
+            Object.entries(dados).filter(([key, value]) => key !== 'id' && value !== undefined)
+            /* 
+              1. evita que retorne dados com 'undefined'
+              2. transforma o objeto em lista, filtra-o e volta para o objeto:
+                - [chave, valor] -> Object.entries()
+                - filter(([key, value]) -> mantém só os pares que passam no teste (descarta o id e campos vazios)
+              3. faz o caminho inverso e junta os pares restantes em um objeto, de novo com o Object.entries()
+            */
+          )
+          updatedProducts[result.id] = { ...(updatedProducts[result.id] ?? result), ...changes }
+
+          const oldCard = divProdutos.querySelector(`[data-id="${result.id}"]`) // encontra o card pelo atributo
+          if (oldCard) oldCard.replaceWith(createCard(result)) // troca pelo novo no mesmo lugar se o produto tiver visível na tela
 
         } else if (method === 'DELETE') {
           console.log('Deletado:', result)
