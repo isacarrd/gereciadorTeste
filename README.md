@@ -45,9 +45,9 @@ Atualmente testado:
 - [x] Adicionar imagens como algo alterável.
 - [x] Criar categorias com uso do select.
 - [x] Criar produto com a categoria + select.
-- [ ] Renderizar produtos através da API DummyJSON.
-- [ ] Pesquisar produtos através da API DummyJSON.
-- [ ] CRUD de produtos através da API DummyJSON.
+- [x] Renderizar produtos através da API DummyJSON.
+- [x] Pesquisar produtos através da API DummyJSON.
+- [x] CRUD de produtos através da API DummyJSON.
 
 
 <br>
@@ -56,6 +56,6 @@ Atualmente testado:
 
 ➡️ **[Avançar para a Fase 1: React + Dados Simulados](https://github.com/isacarrd/GerenciadorFase1)**
 
-➡️ **[Avançar para a Fase 2: Integração com API Pública](#)**
+➡️ **[Avançar para a Fase 2: Integração com API Pública](https://github.com/isacarrd/GerenciadorFase2)**
 
 ➡️ **[Avançar para a Fase 3: Backend e Banco de Dados](#)**
